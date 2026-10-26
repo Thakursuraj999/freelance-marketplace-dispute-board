@@ -2,8 +2,7 @@
 
 ## Secure Freelance Marketplace & Trustless Escrow Protocol
 
-> **Mini Project–1**  
-> **GLA University — Lucknow/Mathura, Uttar Pradesh**  
+> **GLA University — Mathura, Uttar Pradesh**  
 > **Industry Alliance Partner:** IntegraMinds  
 > **Project Mentor:** Mr. Satyam Kumar Jha
 
@@ -35,7 +34,7 @@ Traditional freelance platforms frequently combine marketplace discovery, paymen
 
 ### Academic context
 
-This work is submitted as **Mini Project–1** at **GLA University, Lucknow/Mathura, Uttar Pradesh**, in collaboration with **IntegraMinds** and under the guidance of **Mr. Satyam Kumar Jha**.
+This work is submitted as **Mini Project** at **GLA University, Mathura, Uttar Pradesh**, in collaboration with **IntegraMinds** and under the guidance of **Mr. Satyam Kumar Jha**.
 
 ---
 
