@@ -1,0 +1,693 @@
+/* Marketplace canvas */
+.marketplace-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.left-column {
+  display: grid;
+  gap: 1.5rem;
+}
+
+/* Search surface */
+.search-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: rgba(19, 27, 46, 0.7);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(12px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-filter-bar:focus-within,
+.search-filter-bar:hover {
+  border-color: var(--line-bright);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.38), 0 0 24px rgba(99, 102, 241, 0.1);
+}
+
+.search-input {
+  min-width: 220px;
+  padding: 0 0.5rem;
+}
+
+.search-input .input-group-text {
+  padding-left: 0;
+  color: var(--muted) !important;
+}
+
+.search-input .input-group-text::first-letter {
+  color: var(--indigo-light);
+}
+
+.search-input input {
+  padding: 0.65rem 0.25rem;
+  color: var(--text) !important;
+  box-shadow: none !important;
+  font-size: 0.78rem;
+}
+
+.search-input input::placeholder {
+  color: #64748b;
+}
+
+.category-chips {
+  justify-content: flex-end;
+}
+
+.chip {
+  padding: 0.55rem 0.75rem;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.chip:hover,
+.chip.active {
+  color: #fff;
+  background: rgba(99, 102, 241, 0.18);
+  border-color: rgba(129, 140, 248, 0.45);
+  box-shadow: 0 5px 15px rgba(99, 102, 241, 0.12);
+}
+
+/* Primary glass panels */
+.job-feed-card,
+.bid-panel {
+  padding: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.job-feed-card:hover,
+.bid-panel:hover {
+  border-color: var(--line-bright);
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.42), 0 0 28px rgba(99, 102, 241, 0.1);
+  transform: translateY(-3px);
+}
+
+.card-topline,
+.trust-indicators,
+.job-heading,
+.client-strip,
+.client-profile,
+.panel-heading,
+.section-heading,
+.proposal-header,
+.proposal-person {
+  display: flex;
+  align-items: center;
+}
+
+.card-topline,
+.job-heading,
+.client-strip,
+.panel-heading,
+.section-heading,
+.proposal-header {
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.trust-indicators {
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.trust-tag,
+.status-label,
+.verified-label,
+.match-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.trust-tag {
+  padding: 0.42rem 0.6rem;
+  border: 1px solid;
+  border-radius: 6px;
+}
+
+.escrow-tag {
+  color: #6ee7b7;
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+.dispute-tag {
+  color: #fda4af;
+  background: rgba(244, 63, 94, 0.08);
+  border-color: rgba(244, 63, 94, 0.25);
+}
+
+.timestamp,
+.proposal-header time {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.6rem;
+}
+
+.timestamp i {
+  margin-right: 0.25rem;
+}
+
+.job-heading {
+  align-items: flex-start;
+  margin-top: 1.7rem;
+}
+
+.status-label {
+  color: var(--emerald);
+}
+
+.status-label span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--emerald);
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+
+.job-heading h2 {
+  margin: 0.55rem 0 0;
+  color: #fff;
+  font-size: clamp(1.35rem, 3vw, 1.8rem);
+  line-height: 1.15;
+}
+
+.ghost-icon {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.ghost-icon:hover {
+  color: #fff;
+  background: rgba(99, 102, 241, 0.12);
+  border-color: var(--line-bright);
+}
+
+.job-description,
+.panel-copy,
+.proposal-card p {
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.7;
+}
+
+.job-description {
+  max-width: 47rem;
+  margin: 1.15rem 0;
+}
+
+.skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  padding-bottom: 1.4rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.skill-list span {
+  padding: 0.4rem 0.62rem;
+  color: #c7d2fe;
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(129, 140, 248, 0.16);
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+}
+
+.project-metrics,
+.proposal-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.8rem;
+}
+
+.project-metrics {
+  padding: 1.35rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.project-metrics span,
+.proposal-metrics span,
+.client-profile span {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.57rem;
+  text-transform: uppercase;
+}
+
+.project-metrics strong,
+.proposal-metrics strong {
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.project-metrics div:first-child strong,
+.proposal-metrics div:first-child strong {
+  color: #6ee7b7;
+}
+
+.client-strip {
+  margin-top: 1.2rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--line);
+}
+
+.client-profile {
+  gap: 0.65rem;
+}
+
+.client-profile img,
+.proposal-person img {
+  width: 34px;
+  height: 34px;
+  object-fit: cover;
+  border: 2px solid rgba(129, 140, 248, 0.35);
+  border-radius: 50%;
+}
+
+.client-profile strong {
+  display: block;
+  color: var(--text);
+  font-size: 0.74rem;
+}
+
+.client-profile strong i {
+  margin-left: 0.2rem;
+  color: var(--emerald);
+}
+
+.client-rating {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.6rem;
+}
+
+.client-rating strong {
+  color: #fcd34d;
+  font-size: 0.75rem;
+}
+
+.client-rating i,
+.proposal-person i {
+  color: #fbbf24;
+}
+
+/* Proposal form */
+.panel-heading {
+  align-items: flex-start;
+}
+
+.panel-heading h2,
+.section-heading h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.25rem;
+}
+
+.step-index {
+  color: var(--indigo-light);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.step-index small {
+  color: var(--muted);
+  font-size: 0.6rem;
+}
+
+.panel-copy {
+  margin: 0.7rem 0 1.4rem;
+}
+
+.form-field {
+  margin-bottom: 1rem;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: #d7def0;
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.form-field label small {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  font-weight: 400;
+}
+
+.input-shell {
+  position: relative;
+}
+
+.input-shell > i,
+.input-prefix {
+  position: absolute;
+  top: 50%;
+  left: 0.85rem;
+  color: var(--muted);
+  transform: translateY(-50%);
+}
+
+.input-prefix {
+  color: var(--emerald);
+  font-family: var(--mono);
+}
+
+.input-shell input,
+.form-field textarea {
+  width: 100%;
+  padding: 0.78rem 0.85rem;
+  color: var(--text);
+  background: rgba(5, 10, 22, 0.58);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  outline: 0;
+  font-size: 0.78rem;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.input-shell input {
+  padding-left: 2.25rem;
+}
+
+.input-shell input::placeholder,
+.form-field textarea::placeholder {
+  color: #53617a;
+}
+
+.input-shell input:focus,
+.form-field textarea:focus {
+  background: rgba(8, 14, 29, 0.82);
+  border-color: var(--indigo);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.13), 0 8px 20px rgba(0, 0, 0, 0.16);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+
+.fee-preview {
+  margin: 0.25rem 0 1rem;
+  padding: 0.85rem;
+  background: linear-gradient(135deg, rgba(5, 10, 22, 0.7), rgba(16, 24, 42, 0.55));
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.fee-preview div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.6rem;
+}
+
+.fee-preview div + div {
+  margin-top: 0.65rem;
+  padding-top: 0.65rem;
+  color: var(--text);
+  border-top: 1px solid var(--line);
+  font-weight: 600;
+}
+
+.fee-preview small {
+  color: #64748b;
+}
+
+.fee-preview strong {
+  color: var(--rose);
+  font-weight: 600;
+}
+
+.fee-preview div + div strong {
+  color: var(--emerald);
+}
+
+.primary-button,
+.award-button {
+  width: 100%;
+  padding: 0.78rem 1rem;
+  color: #fff;
+  background: linear-gradient(135deg, var(--indigo), #5558e6);
+  border: 1px solid #818cf8;
+  border-radius: 8px;
+  box-shadow: 0 8px 18px rgba(99, 102, 241, 0.16);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.primary-button i,
+.award-button i {
+  float: right;
+  font-size: 1rem;
+}
+
+.primary-button:hover,
+.award-button:hover {
+  box-shadow: 0 12px 25px rgba(99, 102, 241, 0.3);
+  filter: brightness(1.08);
+}
+
+/* Proposal feed */
+.section-heading {
+  align-items: end;
+  margin-bottom: 1rem;
+}
+
+.section-heading h2 span {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 400;
+}
+
+.sort-control {
+  padding: 0.5rem 0.65rem;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+}
+
+.sort-control:hover {
+  color: #fff;
+  border-color: var(--line-bright);
+}
+
+.sort-control i {
+  margin-right: 0.25rem;
+}
+
+.bids-container {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.proposal-card {
+  padding: 1.2rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(12px);
+}
+
+.proposal-card:hover {
+  border-color: var(--line-bright);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.42), 0 0 24px rgba(99, 102, 241, 0.1);
+  transform: translateY(-3px);
+}
+
+.featured-proposal {
+  background: linear-gradient(145deg, rgba(42, 43, 102, 0.65), rgba(19, 27, 46, 0.7));
+  border-color: rgba(129, 140, 248, 0.38);
+}
+
+.proposal-header {
+  margin-bottom: 1rem;
+}
+
+.match-label,
+.verified-label {
+  color: #c4b5fd;
+}
+
+.verified-label {
+  color: #6ee7b7;
+}
+
+.proposal-person {
+  justify-content: flex-start;
+  gap: 0.7rem;
+}
+
+.proposal-person img {
+  width: 40px;
+  height: 40px;
+}
+
+.proposal-person h3 {
+  margin: 0 0 0.2rem;
+  color: #fff;
+  font-size: 0.88rem;
+  letter-spacing: -0.02em;
+}
+
+.proposal-person span {
+  color: var(--muted);
+  font-size: 0.65rem;
+}
+
+.proposal-person b {
+  margin: 0 0.25rem;
+  color: #43516b;
+}
+
+.proposal-card p {
+  margin: 1rem 0;
+  font-size: 0.75rem;
+}
+
+.proposal-metrics {
+  margin-bottom: 1rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.award-button {
+  padding: 0.62rem 0.8rem;
+  color: var(--indigo-light);
+  background: rgba(99, 102, 241, 0.1);
+  border-color: rgba(129, 140, 248, 0.25);
+  text-align: left;
+}
+
+.new-proposal {
+  animation: proposal-in 0.45s ease both;
+}
+
+@keyframes proposal-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.toast-message {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.85rem 1rem;
+  color: #d1fae5;
+  background: #064e3b;
+  border: 1px solid var(--emerald);
+  border-radius: 8px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  font-size: 0.74rem;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(1rem);
+  transition: 0.25s ease;
+}
+
+.toast-message.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast-message i {
+  font-size: 1rem;
+}
+
+@media (max-width: 1000px) {
+  .marketplace-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .search-filter-bar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+
+  .category-chips {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 575px) {
+  .card-topline,
+  .client-strip,
+  .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .timestamp,
+  .client-rating {
+    align-self: flex-start;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .project-metrics,
+  .proposal-metrics {
+    gap: 0.4rem;
+  }
+
+  .project-metrics strong,
+  .proposal-metrics strong {
+    font-size: 0.68rem;
+  }
+}

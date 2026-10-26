@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ApexArbitri premium freelance marketplace and escrow workspace.">
+  <meta name="author" content="SURAJ KUMAR THAKUR">
+  <title>ApexArbitri | Marketplace &amp; Bidding</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/marketplace.css">
+</head>
+
+<body>
+  <section class="login-screen" id="login-screen" aria-labelledby="login-title">
+    <div class="login-orbit orbit-one"></div>
+    <div class="login-orbit orbit-two"></div>
+    <div class="login-layout">
+      <div class="login-brand-panel">
+        <a class="brand login-brand" href="#" aria-label="ApexArbitri home">
+          <span class="brand-mark"><i class="ti ti-triangle-inverted"></i></span>
+          <span>Apex<span>Arbitri</span></span>
+        </a>
+        <p class="overline"><i class="ti ti-shield-lock"></i> Secure workspace access</p>
+        <h1>Where trust becomes <em>transaction.</em></h1>
+        <p class="login-intro">A private operating environment for transparent freelance agreements, protected milestones, and accountable decisions.</p>
+        <div class="security-status"><span class="security-pulse"></span><span>Encrypted session gateway</span><strong>ACTIVE</strong></div>
+      </div>
+
+      <div class="login-card">
+        <div class="login-card-heading">
+          <div class="keyhole-icon"><i class="ti ti-lock-access"></i></div>
+          <div><p class="overline">Identity verification</p><h2 id="login-title">Secure access keyhole</h2><p>Enter your authorized demo credentials to continue.</p></div>
+        </div>
+        <div class="login-error-alert" id="login-error-alert" role="alert" aria-live="assertive">
+          <i class="ti ti-alert-triangle"></i><span>Access Denied: Invalid Security Hash or Password Code.</span>
+        </div>
+        <form id="login-form" novalidate>
+          <div class="login-field">
+            <label for="login-user-id">Email / User ID</label>
+            <div class="login-input-shell"><i class="ti ti-at"></i><input id="login-user-id" name="userId" type="email" autocomplete="username" placeholder="name@company.com" required></div>
+          </div>
+          <div class="login-field">
+            <div class="login-label-row"><label for="login-password">Security Password</label><span><i class="ti ti-eye-off"></i> Protected</span></div>
+            <div class="login-input-shell"><i class="ti ti-key"></i><input id="login-password" name="password" type="password" autocomplete="current-password" placeholder="Enter password code" required></div>
+          </div>
+          <label class="remember-session"><input id="remember-session" type="checkbox"><span class="custom-check"><i class="ti ti-check"></i></span><span>Remember Session</span></label>
+          <button class="login-button" type="submit">Authenticate access <i class="ti ti-arrow-up-right"></i></button>
+        </form>
+        <div class="demo-access-card">
+          <div class="demo-access-heading"><i class="ti ti-key"></i><div><strong>Demo Access Keys</strong><span>Use either authorized profile</span></div></div>
+          <div class="demo-credential"><span><i class="ti ti-building-bank"></i> Client</span><code>client@veritas.com</code><b>admin123</b></div>
+          <div class="demo-credential"><span><i class="ti ti-code"></i> Freelancer</span><code>devin@apex.com</code><b>dev123</b></div>
+        </div>
+        <p class="login-footnote"><i class="ti ti-info-circle"></i> Prototype credentials are provided for presentation access only.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="app-shell is-locked" id="app-shell">
+    <header class="topbar">
+      <div class="container-fluid app-container">
+        <a class="brand" href="#" aria-label="ApexArbitri dashboard">
+          <span class="brand-mark"><i class="ti ti-triangle-inverted"></i></span>
+          <span>Apex<span>Arbitri</span></span>
+        </a>
+        <div class="topbar-meta">
+          <span class="online-status"><i class="ti ti-activity"></i> Escrow network online</span>
+          <span class="profile-chip"><span class="profile-initials">SK</span> SURAJ KUMAR THAKUR</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="container-fluid app-container py-4 py-lg-5">
+      <section class="workspace-heading">
+        <div>
+          <p class="overline"><i class="ti ti-command"></i> Freelance operations / Workspace 01</p>
+          <h1>Marketplace <em>&amp; Bidding</em></h1>
+          <p class="heading-copy">Source exceptional talent, secure every milestone, and keep each agreement transparent.</p>
+        </div>
+        <div class="module-context">
+          <span>Assigned module</span>
+          <strong>Marketplace &amp; Bidding</strong>
+        </div>
+      </section>
+
+      <nav class="module-tabs" aria-label="ApexArbitri modules">
+        <button class="module-tab active" type="button"><i class="ti ti-briefcase"></i> Bidding Marketplace</button>
+        <button class="module-tab" type="button"><i class="ti ti-lock"></i> Milestone Escrow</button>
+        <button class="module-tab" type="button"><i class="ti ti-scale"></i> Dispute Board</button>
+        <button class="module-tab" type="button"><i class="ti ti-file-analytics"></i> Audit Ledger</button>
+      </nav>
+
+      <section class="marketplace-layout">
+        <div class="left-column">
+          <article class="job-feed-card glass-card">
+            <div class="card-topline">
+              <div class="trust-indicators">
+                <span class="trust-tag escrow-tag"><i class="ti ti-lock"></i> Escrow guaranteed</span>
+                <span class="trust-tag dispute-tag"><i class="ti ti-shield-check"></i> Dispute protected</span>
+              </div>
+              <span class="timestamp"><i class="ti ti-clock"></i> Posted 3 hours ago</span>
+            </div>
+            <div class="job-heading">
+              <div>
+                <span class="status-label"><span></span> Live requisition</span>
+                <h2>Cross-Platform Fintech Mobile App</h2>
+              </div>
+              <button class="ghost-icon" type="button" aria-label="Save project"><i class="ti ti-bookmark"></i></button>
+            </div>
+            <p class="job-description">Build a secure, high-performance mobile experience for modern payments across iOS and Android. The product should feel effortless while keeping every transaction protected.</p>
+            <div class="skill-list">
+              <span>Flutter</span><span>Node.js</span><span>Stripe API</span><span>Biometric Auth</span>
+            </div>
+            <div class="project-metrics">
+              <div><span>Fixed escrow budget</span><strong>$4,200</strong></div>
+              <div><span>Experience level</span><strong>Intermediate</strong></div>
+              <div><span>Project breakdown</span><strong>3 milestones</strong></div>
+            </div>
+            <div class="client-strip">
+              <div class="client-profile">
+                <img src="https://i.pravatar.cc/80?img=12" alt="Orion Finance client avatar">
+                <div><span>Posted by</span><strong>Orion Finance <i class="ti ti-circle-check"></i></strong></div>
+              </div>
+              <div class="client-rating"><strong>4.95</strong><span><i class="ti ti-star-filled"></i> (24 reviews)</span></div>
+            </div>
+          </article>
+
+          <article class="bid-panel glass-card">
+            <div class="panel-heading">
+              <div><p class="overline">Make your move</p><h2>Submit a competitive bid</h2></div>
+              <span class="step-index">01 <small>/ 01</small></span>
+            </div>
+            <p class="panel-copy">Present your best offer. Your proposal will be securely shared with the verified client for review.</p>
+            <form id="bid-form">
+              <div class="form-field">
+                <label for="freelancer-name">Your full name</label>
+                <div class="input-shell"><i class="ti ti-user"></i><input type="text" id="freelancer-name" placeholder="e.g. Suraj Kumar Thakur" required></div>
+              </div>
+              <div class="form-row">
+                <div class="form-field"><label for="bid-amount">Your bid <small>USD</small></label><div class="input-shell"><span class="input-prefix">$</span><input type="number" id="bid-amount" placeholder="4,000" min="1" required></div></div>
+                <div class="form-field"><label for="estimated-days">Delivery <small>days</small></label><div class="input-shell"><i class="ti ti-calendar-event"></i><input type="number" id="estimated-days" placeholder="30" min="1" required></div></div>
+              </div>
+              <div class="fee-preview">
+                <div><span>Platform escrow fee <small>10%</small></span><strong id="fee-deduction">-$0.00</strong></div>
+                <div><span>Estimated take-home pay</span><strong id="take-home-pay">$0.00</strong></div>
+              </div>
+              <div class="form-field"><label for="cover-letter">Proposal pitch / cover letter</label><textarea id="cover-letter" rows="4" placeholder="Highlight why your skills make you the best fit..." required></textarea></div>
+              <button class="primary-button" type="submit">Submit proposal <i class="ti ti-arrow-up-right"></i></button>
+            </form>
+          </article>
+        </div>
+
+        <div class="bids-column">
+          <div class="section-heading"><div><p class="overline">Live activity</p><h2>Submitted proposals <span id="proposal-total">(3)</span></h2></div><button class="sort-control" type="button"><i class="ti ti-arrows-sort"></i> Recommended</button></div>
+          <div class="bids-container" id="bids-container">
+            <article class="proposal-card featured-proposal"><div class="proposal-header"><span class="match-label"><i class="ti ti-sparkles"></i> Top match</span><time>12 min ago</time></div><div class="proposal-person"><img src="https://i.pravatar.cc/80?img=68" alt="Arjun Mehta avatar"><div><h3>Arjun Mehta</h3><span>Senior Product Engineer <b>·</b> 4.9 <i class="ti ti-star-filled"></i></span></div></div><p>I specialize in secure fintech products and can bring your vision to production with a clean, scalable architecture.</p><div class="proposal-metrics"><div><span>Bid amount</span><strong>$3,850</strong></div><div><span>Delivery</span><strong>28 days</strong></div><div><span>Completed</span><strong>42 projects</strong></div></div><button class="award-button" type="button">Award contract <i class="ti ti-arrow-up-right"></i></button></article>
+            <article class="proposal-card"><div class="proposal-header"><span class="verified-label"><i class="ti ti-circle-check"></i> Verified proposal</span><time>1 hr ago</time></div><div class="proposal-person"><img src="https://i.pravatar.cc/80?img=47" alt="Sarah Kim avatar"><div><h3>Sarah Kim</h3><span>Full-Stack Developer <b>·</b> 4.8 <i class="ti ti-star-filled"></i></span></div></div><p>A thoughtful, user-first approach to your cross-platform app, with transparent weekly milestones and demos.</p><div class="proposal-metrics"><div><span>Bid amount</span><strong>$4,100</strong></div><div><span>Delivery</span><strong>35 days</strong></div><div><span>Completed</span><strong>31 projects</strong></div></div><button class="award-button" type="button">Award contract <i class="ti ti-arrow-up-right"></i></button></article>
+            <article class="proposal-card"><div class="proposal-header"><span class="verified-label"><i class="ti ti-circle-check"></i> Verified proposal</span><time>3 hrs ago</time></div><div class="proposal-person"><img src="https://i.pravatar.cc/80?img=11" alt="Jordan Mills avatar"><div><h3>Jordan Mills</h3><span>Mobile App Specialist <b>·</b> 4.7 <i class="ti ti-star-filled"></i></span></div></div><p>I’ll build a polished MVP that keeps security at the core while making every payment interaction feel effortless.</p><div class="proposal-metrics"><div><span>Bid amount</span><strong>$3,600</strong></div><div><span>Delivery</span><strong>32 days</strong></div><div><span>Completed</span><strong>26 projects</strong></div></div><button class="award-button" type="button">Award contract <i class="ti ti-arrow-up-right"></i></button></article>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div class="toast-message" id="success-alert" role="status" aria-live="polite"><i class="ti ti-circle-check"></i> Proposal submitted successfully</div>
+  <script src="js/marketplace.js"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>
