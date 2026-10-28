@@ -1,13 +1,3 @@
-/**
- * ==========================================================================
- * APEXARBITRI MARKETPLACE & BIDDING MODULE
- * GLA University Mini Project-1
- * 
- * Handles project requisitions, dynamic bidding, fee estimation, and contract awarding.
- * Coupled via window CustomEvents: 'contractAwarded' and 'auditLogged'.
- * ==========================================================================
- */
-
 const MarketplaceModule = (() => {
   // Storage key for state persistence
   const STORAGE_KEY = "apex_marketplace_jobs";
