@@ -4,7 +4,7 @@
 
 ### Academic Project Report — Mini Project–1
 
-**Institution:** GLA University, Lucknow/Mathura, Uttar Pradesh  
+**Institution:** GLA University, Mathura, Uttar Pradesh  
 **Industry Alliance Partner:** IntegraMinds  
 **Project Mentor:** Mr. Satyam Kumar Jha  
 **Module Lead for Bidding & Marketplace:** SURAJ KUMAR THAKUR  
