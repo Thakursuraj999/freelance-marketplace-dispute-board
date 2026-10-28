@@ -1,75 +1,154 @@
+
 /**
  * ==========================================================================
  * APEXARBITRI CRYPTOGRAPHIC AUDIT LEDGER MODULE
  * GLA University Mini Project-1
- * 
- * Handles immutable audit trailing, background state hashing, and statistic updates
+ *
+ * Handles audit logging, SHA-256 hashing, hash chaining, persistence,
+ * and statistics updates.
  * ==========================================================================
  */
 
 const AuditModule = (() => {
   const entries = [];
-  
-  // Custom HTML escaping helper to prevent XSS injection
-  const escapeHtml = (value) => {
+  const STORAGE_KEY = "apex_audit_ledger";
+  const MAX_ENTRIES = 1000;
+  const GENESIS_HASH = "GENESIS";
+
+  let initialized = false;
+  let processingQueue = Promise.resolve();
+
+  // Escape dynamic HTML to prevent XSS.
+  function escapeHtml(value) {
     const node = document.createElement("div");
     node.textContent = String(value ?? "");
     return node.innerHTML;
-  };
-
-  /**
-   * Helper function to generate a real cryptographic SHA-256 hash using the Web Crypto API.
-   * Falls back to a deterministic pseudo-sha256 if Web Crypto is blocked by sandbox policies.
-   */
-  async function generateSHA256(message) {
-    try {
-      const msgBuffer = new TextEncoder().encode(message);
-      const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
-    } catch (e) {
-      // Deterministic robust fallback hash generator
-      let hash = 0;
-      for (let i = 0; i < message.length; i++) {
-        const char = message.charCodeAt(i);
-        hash = (hash << 5) - hash + char;
-        hash = hash & hash;
-      }
-      return "f8e4c9" + Math.abs(hash).toString(16).padStart(8, "0") + "a127d96b4ef89";
-    }
   }
 
   /**
-   * Appends a log entry directly into localStorage for immutable session persistence.
+   * Generate a genuine SHA-256 hash using Web Crypto.
+   * Never return a fake hash if cryptographic hashing fails.
+   */
+  async function generateSHA256(message) {
+    if (!globalThis.crypto?.subtle || !globalThis.TextEncoder) {
+      throw new Error(
+        "Web Crypto unavailable. Run the application using HTTPS or localhost."
+      );
+    }
+
+    const buffer = new TextEncoder().encode(message);
+    const digest = await globalThis.crypto.subtle.digest("SHA-256", buffer);
+
+    return Array.from(new Uint8Array(digest))
+      .map(byte => byte.toString(16).padStart(2, "0"))
+      .join("");
+  }
+
+  /**
+   * Validate records restored from localStorage.
+   */
+  function validateEntry(entry) {
+    if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
+      return false;
+    }
+
+    return (
+      typeof entry.timestamp === "string" &&
+      Number.isFinite(Date.parse(entry.timestamp)) &&
+      typeof entry.action === "string" &&
+      typeof entry.actor === "string" &&
+      typeof entry.details === "string" &&
+      typeof entry.hash === "string" &&
+      /^[a-f0-9]{64}$/i.test(entry.hash)
+    );
+  }
+
+  /**
+   * Stable serialization for the hash payload.
+   */
+  function createPayload(entry, previousHash) {
+    return JSON.stringify({
+      timestamp: entry.timestamp,
+      action: entry.action,
+      actor: entry.actor,
+      details: entry.details,
+      previousHash
+    });
+  }
+
+  /**
+   * Restore records and rebuild the hash chain.
+   *
+   * Existing records are rehashed because legacy entries did not
+   * contain previousHash links.
+   */
+  async function restoreEntries(storedEntries) {
+    entries.length = 0;
+
+    const validEntries = storedEntries
+      .filter(validateEntry)
+      .reverse()
+      .slice(-MAX_ENTRIES);
+
+    const rebuilt = [];
+    let previousHash = GENESIS_HASH;
+
+    for (const entry of validEntries) {
+      const record = {
+        timestamp: entry.timestamp,
+        action: entry.action,
+        actor: entry.actor,
+        details: entry.details
+      };
+
+      const hash = await generateSHA256(
+        createPayload(record, previousHash)
+      );
+
+      rebuilt.push({
+        ...record,
+        previousHash,
+        hash
+      });
+
+      previousHash = hash;
+    }
+
+    entries.push(...rebuilt.reverse());
+  }
+
+  /**
+   * Persist audit records.
+   * localStorage persistence alone does not guarantee immutability.
    */
   function persistToStorage() {
     try {
-      localStorage.setItem("apex_audit_ledger", JSON.stringify(entries));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
     } catch (error) {
-      console.warn("⚠️ LocalStorage persistence failed: ", error);
+      console.warn("Audit ledger persistence failed:", error);
     }
   }
 
   /**
-   * Dynamic non-destructive renderer.
-   * Updates only the target table body and visual statistics instead of replacing the workspace layout.
+   * Render the existing five-column audit table.
    */
   function render() {
     const tableBody = document.getElementById("audit-table-body");
     const statCount = document.getElementById("audit-stat-count");
 
-    if (!tableBody) return;
-
-    // Update Counter badge
     if (statCount) {
-      statCount.textContent = entries.length;
+      statCount.textContent = String(entries.length);
     }
+
+    if (!tableBody) return;
 
     if (entries.length === 0) {
       tableBody.innerHTML = `
         <tr>
-          <td colspan="5" class="text-center text-muted py-5" style="font-family: var(--font-sans);">
-            <i class="ti ti-database-off d-block mb-2" style="font-size: 2rem; color: var(--color-soft-slate);"></i>
+          <td colspan="5" class="text-center text-muted py-5"
+              style="font-family: var(--font-sans);">
+            <i class="ti ti-database-off d-block mb-2"
+               style="font-size: 2rem; color: var(--color-soft-slate);"></i>
             No system actions or escrow audits recorded in this session.
           </td>
         </tr>
@@ -77,42 +156,56 @@ const AuditModule = (() => {
       return;
     }
 
-    // Render table rows
-    tableBody.innerHTML = entries.map((entry) => {
-      // Check event action type for colored badge rendering
+    tableBody.innerHTML = entries.map(entry => {
       let badgeClass = "badge-persona-client";
-      if (entry.action.includes("ERROR") || entry.action.includes("FAIL") || entry.action.includes("DISPUTE")) {
+
+      if (/ERROR|FAIL|DISPUTE/i.test(entry.action)) {
         badgeClass = "bg-danger text-white";
-      } else if (entry.action.includes("RELEASE") || entry.action.includes("FUND") || entry.action.includes("SUCCESS")) {
+      } else if (/RELEASE|FUND|SUCCESS/i.test(entry.action)) {
         badgeClass = "bg-success text-white";
-      } else if (entry.action.includes("AUTH") || entry.action.includes("LOGIN")) {
+      } else if (/AUTH|LOGIN/i.test(entry.action)) {
         badgeClass = "bg-primary text-white";
       }
 
-      // Format ISO string to local IST string
-      const localTimeStr = new Date(entry.timestamp).toLocaleString("en-IN", {
-        timeZone: "Asia/Kolkata",
-        hour12: true,
-        year: "numeric",
-        month: "short",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit"
-      });
+      const date = new Date(entry.timestamp);
+
+      const timeText = Number.isNaN(date.getTime())
+        ? "Invalid date"
+        : date.toLocaleString("en-IN", {
+            timeZone: "Asia/Kolkata",
+            hour12: true,
+            year: "numeric",
+            month: "short",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+          });
 
       return `
         <tr>
-          <td style="font-family: var(--font-mono); font-size: 0.75rem;" class="fw-bold">${escapeHtml(localTimeStr)}</td>
+          <td class="fw-bold"
+              style="font-family: var(--font-mono); font-size: 0.75rem;">
+            ${escapeHtml(timeText)}
+          </td>
           <td>
-            <span class="badge ${badgeClass}" style="font-family: var(--font-mono); font-size: 0.65rem; padding: 4px 8px;">
+            <span class="badge ${badgeClass}"
+                  style="font-family: var(--font-mono); font-size: 0.65rem; padding: 4px 8px;">
               ${escapeHtml(entry.action)}
             </span>
           </td>
-          <td class="small fw-semibold text-dark">${escapeHtml(entry.actor)}</td>
-          <td class="small text-muted">${escapeHtml(entry.details)}</td>
-          <td style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); word-break: break-all;">
-            <code class="text-dark bg-light px-1 py-0.5 rounded">${escapeHtml(entry.hash.substring(0, 32))}...</code>
+          <td class="small fw-semibold text-dark">
+            ${escapeHtml(entry.actor)}
+          </td>
+          <td class="small text-muted">
+            ${escapeHtml(entry.details)}
+          </td>
+          <td style="font-family: var(--font-mono); font-size: 0.7rem;
+                     color: var(--text-muted); word-break: break-all;">
+            <code class="text-dark bg-light px-1 rounded"
+                  title="${escapeHtml(entry.hash)}">
+              ${escapeHtml(entry.hash.slice(0, 32))}...
+            </code>
           </td>
         </tr>
       `;
@@ -120,60 +213,148 @@ const AuditModule = (() => {
   }
 
   /**
-   * Main module registration logic.
-   * Registers a global handler for the CustomEvent 'auditLogged'.
+   * Process events sequentially to avoid hash-ordering problems.
    */
-  function init() {
-    // Prevent duplicated event handlers during initialization loops
-    window.removeEventListener("auditLogged", handleAuditLoggedEvent);
+  async function processEvent(detail) {
+    const action =
+      typeof detail.action === "string" && detail.action.trim()
+        ? detail.action.trim()
+        : "SYSTEM_EVENT";
 
-    try {
-      const storedEntries = JSON.parse(localStorage.getItem("apex_audit_ledger") || "[]");
-      if (Array.isArray(storedEntries)) {
-        entries.length = 0; // Clear dynamic array structure safely
-        entries.push(...storedEntries);
-      }
-    } catch (error) {
-      console.warn("⚠️ Audit ledger session restoration bypassed.", error);
-    }
+    const actor =
+      typeof detail.actor === "string" && detail.actor.trim()
+        ? detail.actor.trim()
+        : "anonymous@apex.com";
 
-    // Attach active listener
-    window.addEventListener("auditLogged", handleAuditLoggedEvent);
+    const details =
+      typeof detail.details === "string"
+        ? detail.details
+        : "System status event updated.";
 
-    render();
-  }
+    const timestamp =
+      typeof detail.timestamp === "string" &&
+      Number.isFinite(Date.parse(detail.timestamp))
+        ? detail.timestamp
+        : new Date().toISOString();
 
-  /**
-   * Action handler for receiving and hashing system CustomEvents.
-   */
-  async function handleAuditLoggedEvent(event) {
-    const detail = event.detail || {};
-    const action = detail.action || "SYSTEM_EVENT";
-    const actor = detail.actor || "anonymous@apex.com";
-    const details = detail.details || "System status event updated.";
-    const timestamp = detail.timestamp || new Date().toISOString();
+    const record = { timestamp, action, actor, details };
 
-    // Generate cryptographic SHA-256 block chain from payload data
-    const payloadString = `${action}|${actor}|${details}|${timestamp}`;
-    const cryptographicHash = await generateSHA256(payloadString);
+    const previousHash = entries.length
+      ? entries[0].hash
+      : GENESIS_HASH;
 
-    // Unshift to place latest event at the top of the stack
+    const hash = await generateSHA256(
+      createPayload(record, previousHash)
+    );
+
     entries.unshift({
-      timestamp,
-      action,
-      actor,
-      details,
-      hash: cryptographicHash
+      ...record,
+      previousHash,
+      hash
     });
+
+    if (entries.length > MAX_ENTRIES) {
+      entries.length = MAX_ENTRIES;
+    }
 
     persistToStorage();
     render();
   }
 
-  return { 
-    init, 
+  /**
+   * Global auditLogged event listener.
+   */
+  function handleAuditLoggedEvent(event) {
+    const detail = event.detail || {};
+
+    processingQueue = processingQueue
+      .then(() => processEvent(detail))
+      .catch(error => {
+        console.error("Audit event processing failed:", error);
+      });
+  }
+
+  /**
+   * Initialize once and restore the saved ledger.
+   */
+  function init() {
+    if (initialized) {
+      render();
+      return;
+    }
+
+    initialized = true;
+
+    let storedEntries = [];
+
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+
+      if (raw !== null) {
+        const parsed = JSON.parse(raw);
+
+        if (Array.isArray(parsed)) {
+          storedEntries = parsed;
+        } else {
+          console.warn("Invalid audit ledger format.");
+        }
+      }
+    } catch (error) {
+      console.warn("Audit ledger restoration failed:", error);
+    }
+
+    // Restore first; queued events will be processed afterward.
+    processingQueue = restoreEntries(storedEntries)
+      .then(() => {
+        persistToStorage();
+        render();
+      })
+      .catch(error => {
+        console.error("Audit ledger initialization failed:", error);
+        entries.length = 0;
+        render();
+      });
+
+    window.addEventListener("auditLogged", handleAuditLoggedEvent);
+  }
+
+  /**
+   * Verify the in-memory hash chain.
+   */
+  async function verifyChain() {
+    await processingQueue;
+
+    try {
+      let previousHash = GENESIS_HASH;
+
+      for (const entry of [...entries].reverse()) {
+        if (entry.previousHash !== previousHash) {
+          return false;
+        }
+
+        const expectedHash = await generateSHA256(
+          createPayload(entry, previousHash)
+        );
+
+        if (expectedHash !== entry.hash) {
+          return false;
+        }
+
+        previousHash = entry.hash;
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Hash chain verification failed:", error);
+      return false;
+    }
+  }
+
+  return {
+    init,
     render,
-    getEntries: () => [...entries] // Read-only access safe interface
+    getEntries: () => entries.map(entry => ({ ...entry })),
+    verifyChain
   };
 })();
 
@@ -184,3 +365,4 @@ if (document.readyState === "loading") {
 } else {
   AuditModule.init();
 }
+
