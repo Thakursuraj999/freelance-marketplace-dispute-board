@@ -8,16 +8,22 @@
   <meta name="author" content="SURAJ KUMAR THAKUR">
   <title>ApexArbitri | Marketplace &amp; Bidding</title>
 
+  <!-- Typography & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+
+  <!-- Application Stylesheets -->
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/marketplace.css">
+  <link rel="stylesheet" href="css/escrow.css">
+  <link rel="stylesheet" href="css/dispute.css">
 </head>
 
 <body>
+  <!-- ==================== 1. LOGIN ACCESS GATEWAY ==================== -->
   <section class="login-screen" id="login-screen" aria-labelledby="login-title">
     <div class="login-orbit orbit-one"></div>
     <div class="login-orbit orbit-two"></div>
@@ -36,34 +42,47 @@
       <div class="login-card">
         <div class="login-card-heading">
           <div class="keyhole-icon"><i class="ti ti-lock-access"></i></div>
-          <div><p class="overline">Identity verification</p><h2 id="login-title">Secure access keyhole</h2><p>Enter your authorized demo credentials to continue.</p></div>
+          <div>
+            <p class="overline">Identity verification</p>
+            <h2 id="login-title">Secure access keyhole</h2>
+            <p>Enter your authorized demo credentials to continue.</p>
+          </div>
         </div>
-        <div class="login-error-alert" id="login-error-alert" role="alert" aria-live="assertive">
+
+        <div class="login-error-alert d-none" id="login-error-alert" role="alert" aria-live="assertive">
           <i class="ti ti-alert-triangle"></i><span>Access Denied: Invalid Security Hash or Password Code.</span>
         </div>
-        <form id="login-form" novalidate>
+
+        <form id="login-form" aria-describedby="login-error-alert" novalidate>
           <div class="login-field">
             <label for="login-user-id">Email / User ID</label>
             <div class="login-input-shell"><i class="ti ti-at"></i><input id="login-user-id" name="userId" type="email" autocomplete="username" placeholder="name@company.com" required></div>
           </div>
+
           <div class="login-field">
             <div class="login-label-row"><label for="login-password">Security Password</label><span><i class="ti ti-eye-off"></i> Protected</span></div>
             <div class="login-input-shell"><i class="ti ti-key"></i><input id="login-password" name="password" type="password" autocomplete="current-password" placeholder="Enter password code" required></div>
           </div>
+
           <label class="remember-session"><input id="remember-session" type="checkbox"><span class="custom-check"><i class="ti ti-check"></i></span><span>Remember Session</span></label>
           <button class="login-button" type="submit">Authenticate access <i class="ti ti-arrow-up-right"></i></button>
         </form>
+
+        <!-- All 3 Dedicated University Roles -->
         <div class="demo-access-card">
-          <div class="demo-access-heading"><i class="ti ti-key"></i><div><strong>Demo Access Keys</strong><span>Use either authorized profile</span></div></div>
-          <div class="demo-credential"><span><i class="ti ti-building-bank"></i> Client</span><code>client@veritas.com</code><b>admin123</b></div>
-          <div class="demo-credential"><span><i class="ti ti-code"></i> Freelancer</span><code>devin@apex.com</code><b>dev123</b></div>
+          <div class="demo-access-heading"><i class="ti ti-key"></i><div><strong>Demo Access Keys</strong><span>Select an authorized profile</span></div></div>
+          <div class="demo-credential" id="demo-client-btn" style="cursor: pointer;"><span><i class="ti ti-building-bank"></i> Client</span><code>client@veritas.com</code><b>admin123</b></div>
+          <div class="demo-credential" id="demo-freelancer-btn" style="cursor: pointer;"><span><i class="ti ti-code"></i> Freelancer</span><code>devin@apex.com</code><b>dev123</b></div>
+          <div class="demo-credential" id="demo-authority-btn" style="cursor: pointer;"><span><i class="ti ti-shield-cog"></i> Authority</span><code>admin@apex.com</code><b>super123</b></div>
         </div>
-        <p class="login-footnote"><i class="ti ti-info-circle"></i> Prototype credentials are provided for presentation access only.</p>
+
+        <p class="login-footnote"><i class="ti ti-info-circle"></i> Prototype credentials are provided for presentation evaluation only.</p>
       </div>
     </div>
   </section>
 
-  <div class="app-shell is-locked" id="app-shell">
+  <!-- ==================== 2. MAIN APPLICATION SHELL ==================== -->
+  <div class="app-shell is-locked d-none" id="app-shell">
     <header class="topbar">
       <div class="container-fluid app-container">
         <a class="brand" href="#" aria-label="ApexArbitri dashboard">
@@ -72,7 +91,11 @@
         </a>
         <div class="topbar-meta">
           <span class="online-status"><i class="ti ti-activity"></i> Escrow network online</span>
-          <span class="profile-chip"><span class="profile-initials">USR</span> USER 1</span>
+          <span class="profile-chip" id="session-user-badge"><span class="profile-initials" id="session-initials">DEV</span> <span id="session-user-name">Devin Vance</span></span>
+          <button class="logout-button" id="logout-button" type="button" aria-label="Log out and switch user">
+            <i class="ti ti-logout"></i>
+            <span>Logout</span>
+          </button>
         </div>
       </div>
     </header>
@@ -81,95 +104,381 @@
       <section class="workspace-heading">
         <div>
           <p class="overline"><i class="ti ti-command"></i> Freelance operations / Workspace 01</p>
-          <h1>Marketplace <em>&amp; Bidding</em></h1>
-          <p class="heading-copy">Source exceptional talent, secure every milestone, and keep each agreement transparent.</p>
+          <h1 id="active-panel-title">Marketplace <em>&amp; Bidding</em></h1>
+          <p class="heading-copy" id="active-panel-desc">Source exceptional talent, secure every milestone, and keep each agreement transparent.</p>
         </div>
         <div class="module-context">
           <span>Assigned module</span>
-          <strong>Marketplace &amp; Bidding</strong>
+          <strong>Marketplace &amp; Bidding (Suraj)</strong>
         </div>
       </section>
 
+      <!-- Navigation Tabs -->
       <nav class="module-tabs" aria-label="ApexArbitri modules">
-        <button class="module-tab active" type="button"><i class="ti ti-briefcase"></i> Bidding Marketplace</button>
-        <button class="module-tab" type="button"><i class="ti ti-lock"></i> Milestone Escrow</button>
-        <button class="module-tab" type="button"><i class="ti ti-scale"></i> Dispute Board</button>
-        <button class="module-tab" type="button"><i class="ti ti-file-analytics"></i> Audit Ledger</button>
+        <button class="module-tab active" id="marketplace-tab" type="button" role="tab" data-tab="marketplace" aria-selected="true" aria-controls="marketplace-panel"><i class="ti ti-briefcase"></i> Bidding Marketplace</button>
+        <button class="module-tab" id="escrow-tab" type="button" role="tab" data-tab="escrow" aria-selected="false" aria-controls="escrow-panel"><i class="ti ti-lock"></i> Milestone Escrow</button>
+        <button class="module-tab" id="dispute-tab" type="button" role="tab" data-tab="dispute" aria-selected="false" aria-controls="dispute-panel"><i class="ti ti-scale"></i> Dispute Board</button>
+        <button class="module-tab" id="audit-tab" type="button" role="tab" data-tab="audit" aria-selected="false" aria-controls="audit-panel"><i class="ti ti-file-analytics"></i> Audit Ledger</button>
       </nav>
 
-      <section class="marketplace-layout">
-        <div class="left-column">
-          <article class="job-feed-card glass-card">
-            <div class="card-topline">
-              <div class="trust-indicators">
-                <span class="trust-tag escrow-tag"><i class="ti ti-lock"></i> Escrow guaranteed</span>
-                <span class="trust-tag dispute-tag"><i class="ti ti-shield-check"></i> Dispute protected</span>
-              </div>
-              <span class="timestamp"><i class="ti ti-clock"></i> Posted 3 hours ago</span>
+      <!-- ==================== TAB 1: MARKETPLACE PANEL ==================== -->
+      <section class="workspace-panel active" id="marketplace-panel" role="tabpanel" aria-labelledby="marketplace-tab">
+        
+        <!-- 💼 CLIENT WORKSPACE VIEW -->
+        <div class="role-client-only">
+          <div class="row g-4">
+            <!-- Left: Client Post Job Form -->
+            <div class="col-12 col-xl-5">
+              <article class="bid-panel glass-card">
+                <div class="panel-heading">
+                  <div><p class="overline">Project commissioning</p><h2>Post a new requisition</h2></div>
+                  <span class="step-index"><i class="ti ti-plus"></i></span>
+                </div>
+                <p class="panel-copy">Define your technical scope, allocate your protected escrow budget, and invite competitive bids.</p>
+                <form id="client-job-form">
+                  <div class="form-field">
+                    <label for="job-title-input">Project Requisition Title</label>
+                    <div class="input-shell"><i class="ti ti-pencil"></i><input type="text" id="job-title-input" placeholder="e.g., Cross-Platform Mobile Payment App" required></div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-field"><label for="job-budget-input">Escrow budget <small>USD</small></label><div class="input-shell"><span class="input-prefix">$</span><input type="number" id="job-budget-input" placeholder="4200" min="100" required></div></div>
+                    <div class="form-field"><label for="job-deadline-input">Delivery <small>days</small></label><div class="input-shell"><i class="ti ti-calendar"></i><input type="number" id="job-deadline-input" placeholder="21" min="1" required></div></div>
+                  </div>
+                  <div class="form-field">
+                    <label for="job-skills-input">Required Skills (Comma separated)</label>
+                    <div class="input-shell"><i class="ti ti-tags"></i><input type="text" id="job-skills-input" placeholder="Flutter, Node.js, Stripe API" required></div>
+                  </div>
+                  <div class="form-field">
+                    <label for="job-desc-input">Scope &amp; Milestones Description</label>
+                    <textarea id="job-desc-input" rows="4" placeholder="Detail the expected deliverables, acceptance tests, and technical dependencies..." required></textarea>
+                  </div>
+                  <button class="primary-button" type="submit">Publish requisition to escrow network <i class="ti ti-arrow-up-right"></i></button>
+                </form>
+              </article>
             </div>
-            <div class="job-heading">
-              <div>
-                <span class="status-label"><span></span> Live requisition</span>
-                <h2>Cross-Platform Fintech Mobile App</h2>
-              </div>
-              <button class="ghost-icon" type="button" aria-label="Save project"><i class="ti ti-bookmark"></i></button>
-            </div>
-            <p class="job-description">Build a secure, high-performance mobile experience for modern payments across iOS and Android. The product should feel effortless while keeping every transaction protected.</p>
-            <div class="skill-list">
-              <span>Flutter</span><span>Node.js</span><span>Stripe API</span><span>Biometric Auth</span>
-            </div>
-            <div class="project-metrics">
-              <div><span>Fixed escrow budget</span><strong>$4,200</strong></div>
-              <div><span>Experience level</span><strong>Intermediate</strong></div>
-              <div><span>Project breakdown</span><strong>3 milestones</strong></div>
-            </div>
-            <div class="client-strip">
-              <div class="client-profile">
-                <img src="https://i.pravatar.cc/80?img=12" alt="Orion Finance client avatar">
-                <div><span>Posted by</span><strong>Orion Finance <i class="ti ti-circle-check"></i></strong></div>
-              </div>
-              <div class="client-rating"><strong>4.95</strong><span><i class="ti ti-star-filled"></i> (24 reviews)</span></div>
-            </div>
-          </article>
 
-          <article class="bid-panel glass-card">
-            <div class="panel-heading">
-              <div><p class="overline">Make your move</p><h2>Submit a competitive bid</h2></div>
-              <span class="step-index">01 <small>/ 01</small></span>
+            <!-- Right: Client's Posted Jobs & Bids Ledger -->
+            <div class="col-12 col-xl-7">
+              <div class="section-heading"><div><p class="overline">Client oversight</p><h2>My active requisitions &amp; bids</h2></div></div>
+              <div id="client-posted-jobs-container" class="d-flex flex-column gap-3">
+                <!-- Injected via javascript -->
+              </div>
             </div>
-            <p class="panel-copy">Present your best offer. Your proposal will be securely shared with the verified client for review.</p>
-            <form id="bid-form">
-              <div class="form-field">
-                <label for="freelancer-name">Your full name</label>
-                <div class="input-shell"><i class="ti ti-user"></i><input type="text" id="freelancer-name" placeholder="NAME" required></div>
-              </div>
-              <div class="form-row">
-                <div class="form-field"><label for="bid-amount">Your bid <small>USD</small></label><div class="input-shell"><span class="input-prefix">$</span><input type="number" id="bid-amount" placeholder="4,000" min="1" required></div></div>
-                <div class="form-field"><label for="estimated-days">Delivery <small>days</small></label><div class="input-shell"><i class="ti ti-calendar-event"></i><input type="number" id="estimated-days" placeholder="30" min="1" required></div></div>
-              </div>
-              <div class="fee-preview">
-                <div><span>Platform escrow fee <small>10%</small></span><strong id="fee-deduction">-$0.00</strong></div>
-                <div><span>Estimated take-home pay</span><strong id="take-home-pay">$0.00</strong></div>
-              </div>
-              <div class="form-field"><label for="cover-letter">Proposal pitch / cover letter</label><textarea id="cover-letter" rows="4" placeholder="Highlight why your skills make you the best fit..." required></textarea></div>
-              <button class="primary-button" type="submit">Submit proposal <i class="ti ti-arrow-up-right"></i></button>
-            </form>
-          </article>
+          </div>
         </div>
 
-        <div class="bids-column">
-          <div class="section-heading"><div><p class="overline">Live activity</p><h2>Submitted proposals <span id="proposal-total">(3)</span></h2></div><button class="sort-control" type="button"><i class="ti ti-arrows-sort"></i> Recommended</button></div>
-          <div class="bids-container" id="bids-container">
-            <article class="proposal-card featured-proposal"><div class="proposal-header"><span class="match-label"><i class="ti ti-sparkles"></i> Top match</span><time>12 min ago</time></div><div class="proposal-person"><img src="https://i.pravatar.cc/80?img=68" alt="Arjun Mehta avatar"><div><h3>Arjun Mehta</h3><span>Senior Product Engineer <b>·</b> 4.9 <i class="ti ti-star-filled"></i></span></div></div><p>I specialize in secure fintech products and can bring your vision to production with a clean, scalable architecture.</p><div class="proposal-metrics"><div><span>Bid amount</span><strong>$3,850</strong></div><div><span>Delivery</span><strong>28 days</strong></div><div><span>Completed</span><strong>42 projects</strong></div></div><button class="award-button" type="button">Award contract <i class="ti ti-arrow-up-right"></i></button></article>
-            <article class="proposal-card"><div class="proposal-header"><span class="verified-label"><i class="ti ti-circle-check"></i> Verified proposal</span><time>1 hr ago</time></div><div class="proposal-person"><img src="https://i.pravatar.cc/80?img=47" alt="Sarah Kim avatar"><div><h3>Sarah Kim</h3><span>Full-Stack Developer <b>·</b> 4.8 <i class="ti ti-star-filled"></i></span></div></div><p>A thoughtful, user-first approach to your cross-platform app, with transparent weekly milestones and demos.</p><div class="proposal-metrics"><div><span>Bid amount</span><strong>$4,100</strong></div><div><span>Delivery</span><strong>35 days</strong></div><div><span>Completed</span><strong>31 projects</strong></div></div><button class="award-button" type="button">Award contract <i class="ti ti-arrow-up-right"></i></button></article>
-            <article class="proposal-card"><div class="proposal-header"><span class="verified-label"><i class="ti ti-circle-check"></i> Verified proposal</span><time>3 hrs ago</time></div><div class="proposal-person"><img src="https://i.pravatar.cc/80?img=11" alt="Jordan Mills avatar"><div><h3>Jordan Mills</h3><span>Mobile App Specialist <b>·</b> 4.7 <i class="ti ti-star-filled"></i></span></div></div><p>I’ll build a polished MVP that keeps security at the core while making every payment interaction feel effortless.</p><div class="proposal-metrics"><div><span>Bid amount</span><strong>$3,600</strong></div><div><span>Delivery</span><strong>32 days</strong></div><div><span>Completed</span><strong>26 projects</strong></div></div><button class="award-button" type="button">Award contract <i class="ti ti-arrow-up-right"></i></button></article>
+        <!-- 💻 FREELANCER WORKSPACE VIEW -->
+        <div class="role-freelancer-only">
+          <div class="marketplace-layout row g-4">
+            <!-- Left: Open Jobs Requisition Feed -->
+            <div class="left-column col-12 col-xl-7">
+              <div class="section-heading"><div><p class="overline">Open Network Opportunities</p><h2>Project Requisition Feed</h2></div></div>
+              <div id="freelancer-job-feed" class="d-flex flex-column gap-3">
+                <!-- Injected via javascript -->
+              </div>
+            </div>
+
+            <!-- Right: Dynamic Bidding Form -->
+            <div class="bids-column col-12 col-xl-5">
+              <article class="bid-panel glass-card sticky-top" style="top: 85px; z-index: 10;">
+                <div class="panel-heading">
+                  <div><p class="overline">Place your offer</p><h2>Submit a proposal</h2></div>
+                  <span class="step-index">01 <small>/ 01</small></span>
+                </div>
+                <p class="panel-copy" id="active-selected-job-label">Targeting: <strong>No Project Selected</strong></p>
+                <form id="bid-form">
+                  <input type="hidden" id="bid-target-job-id" value="">
+                  <div class="form-field">
+                    <label for="freelancer-name">Freelancer full name</label>
+                    <div class="input-shell"><i class="ti ti-user"></i><input type="text" id="freelancer-name" value="Devin Vance" required readonly></div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-field"><label for="bid-amount">Your quote <small>USD</small></label><div class="input-shell"><span class="input-prefix">$</span><input type="number" id="bid-amount" placeholder="4000" min="100" required></div></div>
+                    <div class="form-field"><label for="estimated-days">Timeline <small>days</small></label><div class="input-shell"><i class="ti ti-calendar-event"></i><input type="number" id="estimated-days" placeholder="18" min="1" required></div></div>
+                  </div>
+                  <!-- Fee Preview -->
+                  <div class="fee-preview">
+                    <div><span>Platform escrow fee <small>10%</small></span><strong id="fee-deduction">-$0.00</strong></div>
+                    <div><span>Estimated take-home pay</span><strong id="take-home-pay">$0.00</strong></div>
+                  </div>
+                  <div class="form-field">
+                    <label for="cover-letter">Proposal pitch / cover letter</label>
+                    <textarea id="cover-letter" rows="4" placeholder="Highlight why your skills and technical approach fit this requisition perfectly..." required></textarea>
+                  </div>
+                  <button class="primary-button" type="submit" id="submit-proposal-btn" disabled>Lock proposal details &amp; pitch <i class="ti ti-arrow-up-right"></i></button>
+                </form>
+              </article>
+            </div>
+          </div>
+        </div>
+
+        <!-- ⚖️ AUTHORITY WORKSPACE VIEW -->
+        <div class="role-authority-only">
+          <div class="glass-card text-center py-5">
+            <div class="mb-3"><i class="ti ti-gavel" style="font-size: 3rem; color: var(--color-royal-blue);"></i></div>
+            <h3>Arbitrator Oversight Console</h3>
+            <p class="text-muted max-w-lg mx-auto">As an administrative officer, you can monitor ongoing tenders, inspect escrow contracts, and settle structural contract disputes inside the assigned modules.</p>
+            <div class="d-flex justify-content-center gap-2 mt-4">
+              <button class="btn btn-outline-primary" onclick="document.getElementById('escrow-tab').click()"><i class="ti ti-lock"></i> Check Escrows</button>
+              <button class="btn btn-primary" onclick="document.getElementById('dispute-tab').click()"><i class="ti ti-scale"></i> Resolve Disputes</button>
+            </div>
           </div>
         </div>
       </section>
+
+      <!-- ==================== TAB 2: ESCROW PANEL ==================== -->
+      <section class="workspace-panel d-none" id="escrow-panel" role="tabpanel" aria-labelledby="escrow-tab">
+        <div class="row g-4">
+          <!-- Left: Contract Escrow List -->
+          <div class="col-12 col-xl-7">
+            <div class="section-heading"><div><p class="overline">Active Contracts Ledger</p><h2>Secured Escrow Safeholds</h2></div></div>
+            <div id="escrow-contracts-container" class="d-flex flex-column gap-3">
+              <!-- Dynamic contracts list injected via js -->
+            </div>
+          </div>
+
+          <!-- Right: Escrow Status Inspection -->
+          <div class="col-12 col-xl-5">
+            <article class="bid-panel glass-card sticky-top" style="top: 85px; z-index: 10;">
+              <div class="panel-heading">
+                <div><p class="overline">Fiduciary Inspector</p><h2>Escrow Details &amp; Control</h2></div>
+                <span class="step-index"><i class="ti ti-shield-check"></i></span>
+              </div>
+              
+              <div id="escrow-details-empty" class="text-center py-5">
+                <i class="ti ti-lock-open mb-3" style="font-size: 2.5rem; color: var(--color-soft-slate);"></i>
+                <p class="text-muted">Select an active contract from the escrow ledger to monitor secure milestone states or initiate resolutions.</p>
+              </div>
+
+              <div id="escrow-details-active" class="d-none">
+                <div class="escrow-badge-container d-flex justify-content-between align-items-center mb-4">
+                  <span class="badge" id="inspect-escrow-status" style="background: var(--color-forest-emerald); color: white; padding: 6px 12px; border-radius: 6px; font-family: 'JetBrains Mono', monospace;">FUNDED</span>
+                  <strong class="text-muted" id="inspect-contract-id">#CON-7801</strong>
+                </div>
+
+                <h3 id="inspect-project-title" class="mb-2">Cross-Platform Mobile App</h3>
+                <p id="inspect-project-desc" class="text-muted small mb-4">Milestone contract active between client and developer.</p>
+
+                <div class="mb-4">
+                  <div class="d-flex justify-content-between mb-1"><span>Total Escrow Funded:</span><strong id="inspect-total-amount">$0.00</strong></div>
+                  <div class="progress" style="height: 8px; background: var(--color-soft-slate); border-radius: 4px; overflow: hidden;">
+                    <div id="inspect-escrow-progress" class="progress-bar" role="progressbar" style="width: 0%; background: var(--color-royal-blue);" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                </div>
+
+                <div class="escrow-parties mb-4 p-3 rounded" style="background: var(--color-warm-alabaster); border: 1px solid var(--color-soft-slate);">
+                  <div class="d-flex justify-content-between mb-2 small"><span>Client:</span><strong id="inspect-client-email">client@veritas.com</strong></div>
+                  <div class="d-flex justify-content-between small"><span>Freelancer:</span><strong id="inspect-freelancer-email">devin@apex.com</strong></div>
+                </div>
+
+                <!-- Client view commands -->
+                <div class="escrow-actions-client role-client-only">
+                  <div class="alert alert-info py-2 px-3 small d-flex align-items-center gap-2 mb-3">
+                    <i class="ti ti-info-circle"></i>
+                    <span>Review completed delivery and execute milestone payout.</span>
+                  </div>
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-success py-2" id="btn-release-escrow" type="button" style="background-color: var(--color-forest-emerald); border-color: var(--color-forest-emerald);"><i class="ti ti-circle-check"></i> Release Funds to Freelancer</button>
+                    <button class="btn btn-danger py-2" id="btn-raise-dispute-client" type="button" style="background-color: var(--color-crimson-red); border-color: var(--color-crimson-red);"><i class="ti ti-scale"></i> Initiate Structural Dispute</button>
+                  </div>
+                </div>
+
+                <!-- Freelancer view commands -->
+                <div class="escrow-actions-freelancer role-freelancer-only">
+                  <div class="alert alert-warning py-2 px-3 small d-flex align-items-center gap-2 mb-3">
+                    <i class="ti ti-info-circle"></i>
+                    <span>Awaiting client release. Initiate a dispute if negotiations stall.</span>
+                  </div>
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-danger py-2" id="btn-raise-dispute-freelancer" type="button" style="background-color: var(--color-crimson-red); border-color: var(--color-crimson-red);"><i class="ti ti-scale"></i> Initiate Structural Dispute</button>
+                  </div>
+                </div>
+
+                <!-- Authority view commands -->
+                <div class="escrow-actions-authority role-authority-only">
+                  <div class="alert alert-secondary py-2 px-3 small d-flex align-items-center gap-2 mb-3">
+                    <i class="ti ti-shield"></i>
+                    <span>Arbitrator emergency control state override console.</span>
+                  </div>
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-primary" id="btn-arbitrate-shortcut" onclick="document.getElementById('dispute-tab').click()"><i class="ti ti-scale"></i> Open Dispute Arbitrament Console</button>
+                  </div>
+                </div>
+
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 3: DISPUTE BOARD PANEL ==================== -->
+      <section class="workspace-panel d-none" id="dispute-panel" role="tabpanel" aria-labelledby="dispute-tab">
+        <div class="row g-4">
+          <!-- Left: Active Dispute Cases -->
+          <div class="col-12 col-xl-7">
+            <div class="section-heading"><div><p class="overline">System Tribunal Ledger</p><h2>Active Dispute Board Case files</h2></div></div>
+            <div id="dispute-cases-container" class="d-flex flex-column gap-3">
+              <!-- Active cases loaded from script -->
+            </div>
+          </div>
+
+          <!-- Right: Arbitrament / Argument Panel -->
+          <div class="col-12 col-xl-5">
+            <article class="bid-panel glass-card sticky-top" style="top: 85px; z-index: 10;">
+              <div class="panel-heading">
+                <div><p class="overline">Tribunal Chamber</p><h2>Resolve dispute &amp; case files</h2></div>
+                <span class="step-index"><i class="ti ti-gavel"></i></span>
+              </div>
+
+              <div id="dispute-details-empty" class="text-center py-5">
+                <i class="ti ti-scale mb-3" style="font-size: 2.5rem; color: var(--color-soft-slate);"></i>
+                <p class="text-muted">Select an active dispute case file to inspect arguments, track the tribunal timeline, or execute a binding settlement.</p>
+              </div>
+
+              <div id="dispute-details-active" class="d-none">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                  <span class="badge" id="dispute-inspect-status" style="background: var(--color-crimson-red); color: white; padding: 6px 12px; border-radius: 6px;">DISPUTED</span>
+                  <strong class="text-muted" id="dispute-inspect-id">#DIS-404</strong>
+                </div>
+
+                <h3 id="dispute-inspect-title" class="mb-1">Cross-Platform UI Framework</h3>
+                <p class="text-muted small mb-4" id="dispute-inspect-contract-ref">Reference: Contract #CON-3320</p>
+
+                <!-- Case stats -->
+                <div class="row g-3 mb-4">
+                  <div class="col-6">
+                    <div class="p-2 rounded text-center" style="background: var(--color-warm-alabaster); border: 1px solid var(--color-soft-slate);">
+                      <small class="text-muted d-block">Contested Escrow</small>
+                      <strong id="dispute-inspect-amount" style="font-size: 1.1rem; color: var(--color-crimson-red); font-family: 'JetBrains Mono', sans-serif;">$0.00</strong>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="p-2 rounded text-center" style="background: var(--color-warm-alabaster); border: 1px solid var(--color-soft-slate);">
+                      <small class="text-muted d-block">Originating Party</small>
+                      <strong id="dispute-inspect-initiator" style="font-size: 1.1rem; color: var(--color-royal-blue);">Client</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Arguments Timeline -->
+                <h4 class="mb-3 small text-uppercase tracking-wider">Arguments &amp; Evidence Log</h4>
+                <div class="arguments-timeline mb-4 p-3 rounded" style="background: var(--color-warm-alabaster); border: 1px solid var(--color-soft-slate); max-height: 200px; overflow-y: auto;">
+                  <div class="timeline-item mb-3 pb-2 border-bottom">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                      <strong class="small" id="timeline-party-1">client@veritas.com</strong>
+                      <span class="text-muted" style="font-size: 0.75rem;">1 day ago</span>
+                    </div>
+                    <p class="small text-muted mb-0" id="timeline-arg-1">Developer missed milestones 3 and 4, and stopped replying to emails.</p>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                      <strong class="small" id="timeline-party-2">devin@apex.com</strong>
+                      <span class="text-muted" style="font-size: 0.75rem;">12 hours ago</span>
+                    </div>
+                    <p class="small text-muted mb-0" id="timeline-arg-2">API specification changed three times without formal client budget amendment.</p>
+                  </div>
+                </div>
+
+                <!-- Arbitrator Decisions (Authority Only) -->
+                <div class="role-authority-only">
+                  <div class="alert alert-danger py-2 px-3 small d-flex align-items-center gap-2 mb-3">
+                    <i class="ti ti-shield-alert"></i>
+                    <span>Execute a final, binding arbitration on this contract.</span>
+                  </div>
+                  <div class="row g-2">
+                    <div class="col-6">
+                      <button class="btn btn-outline-danger w-100 py-2" id="btn-dispute-refund" style="border-color: var(--color-crimson-red); color: var(--color-crimson-red);"><i class="ti ti-arrow-back-up"></i> Refund Client</button>
+                    </div>
+                    <div class="col-6">
+                      <button class="btn btn-success w-100 py-2" id="btn-dispute-release" style="background-color: var(--color-forest-emerald); border-color: var(--color-forest-emerald);"><i class="ti ti-circle-check"></i> Release Freelancer</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Read Only view for non-Authority -->
+                <div class="role-client-only role-freelancer-only">
+                  <div class="alert alert-warning py-2 px-3 small d-flex align-items-center gap-2 mb-0">
+                    <i class="ti ti-hourglass"></i>
+                    <span>Awaiting review and binding judgment by the apex authority arbitrator.</span>
+                  </div>
+                </div>
+
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 4: AUDIT LEDGER PANEL ==================== -->
+      <section class="workspace-panel d-none" id="audit-panel" role="tabpanel" aria-labelledby="audit-tab">
+        <article class="glass-card mb-4">
+          <div class="panel-heading">
+            <div><p class="overline">Security Operations</p><h2>Cryptographic Verification Engine</h2></div>
+            <span class="badge" style="background: var(--color-royal-blue); color: white; border-radius: 4px; padding: 5px 10px; font-family: 'JetBrains Mono';">SHA-256 Ledger</span>
+          </div>
+          <p class="panel-copy">Every action, escrow funding, release, and structural dispute resolution is hashed, verified, and pushed to this immutable audit stack.</p>
+          
+          <div class="row g-3">
+            <div class="col-12 col-md-4">
+              <div class="p-3 rounded text-center" style="background: var(--color-warm-alabaster); border: 1px solid var(--color-soft-slate);">
+                <small class="text-muted d-block">TOTAL AUDITED EVENTS</small>
+                <strong id="audit-stat-count" style="font-size: 1.8rem; font-family: 'JetBrains Mono'; color: var(--color-royal-blue);">0</strong>
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="p-3 rounded text-center" style="background: var(--color-warm-alabaster); border: 1px solid var(--color-soft-slate);">
+                <small class="text-muted d-block">LEDGER INTEGRITY STATE</small>
+                <strong style="font-size: 1.8rem; font-family: 'JetBrains Mono'; color: var(--color-forest-emerald);"><i class="ti ti-shield-check"></i> VERIFIED</strong>
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="p-3 rounded text-center" style="background: var(--color-warm-alabaster); border: 1px solid var(--color-soft-slate);">
+                <small class="text-muted d-block">BLOCK HASH RANGE</small>
+                <strong style="font-size: 1.1rem; font-family: 'JetBrains Mono'; color: var(--color-soft-slate);" class="d-block pt-2">8d4f21a...710cfa</strong>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <div class="section-heading"><div><p class="overline">Immutable stack trace</p><h2>Security &amp; Transaction Ledger Logs</h2></div></div>
+        <div class="table-responsive rounded border" style="background: white;">
+          <table class="table mb-0 align-middle">
+            <thead style="background-color: var(--color-warm-alabaster);">
+              <tr>
+                <th style="font-family: 'JetBrains Mono'; width: 12%;">TIMESTAMP</th>
+                <th style="width: 15%;">EVENT TYPE</th>
+                <th style="width: 25%;">ORIGIN / ACTOR</th>
+                <th>PAYLOAD OVERVIEW</th>
+                <th style="font-family: 'JetBrains Mono'; width: 25%;">CRYPTOGRAPHIC SHA-256 STATE HASH</th>
+              </tr>
+            </thead>
+            <tbody id="audit-table-body">
+              <!-- Injected via custom event triggers -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
     </main>
   </div>
-  <div class="toast-message" id="success-alert" role="status" aria-live="polite"><i class="ti ti-circle-check"></i> Proposal submitted successfully</div>
+
+  <!-- ==================== FOOTER AND ATTRIBUTION ==================== -->
+  <footer class="text-center py-4 text-muted border-top mt-auto" style="background-color: var(--color-warm-alabaster); font-family: 'Outfit', sans-serif; font-size: 0.9rem;">
+    <div class="container">
+      <p class="mb-1"><strong>ApexArbitri</strong> - GLA University Mini Project-1 Workspace</p>
+      <p class="mb-0">Designed &amp; Developed by <strong>SURAJ KUMAR THAKUR</strong></p>
+    </div>
+  </footer>
+
+  <!-- Core JavaScript Bundles -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Application Logic Modules -->
+  <script src="js/auth.js"></script>
   <script src="js/marketplace.js"></script>
+  <script src="js/escrow.js"></script>
+  <script src="js/dispute.js"></script>
+  <script src="js/audit.js"></script>
   <script src="js/app.js"></script>
 </body>
 
