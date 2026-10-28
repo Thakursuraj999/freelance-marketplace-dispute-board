@@ -1,98 +1,108 @@
-/* Marketplace canvas */
+/* ==========================================================================
+   APEXARBITRI MARKETPLACE & BIDDING STYLESHEET
+   GLA University Mini Project-1
+   Design System: Bento UI (Warm Alabaster Light Theme)
+   ========================================================================== */
+
+/* ==========================================================================
+   1. MARKETPLACE GRID LAYOUT
+   ========================================================================== */
+
 .marketplace-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-  gap: 1.5rem;
   align-items: start;
 }
 
 .left-column {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 1.5rem;
 }
 
-/* Search surface */
+/* ==========================================================================
+   2. SEARCH & FILTER CHIP CONTROLS
+   ========================================================================== */
+
 .search-filter-bar {
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 0.75rem;
-  background: rgba(19, 27, 46, 0.7);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.24);
-  backdrop-filter: blur(12px);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0.75rem 1rem;
+  background-color: var(--color-crisp-white) !important;
+  border: 1px solid var(--color-soft-slate) !important;
+  border-radius: 12px;
+  box-shadow: var(--shadow-soft) !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .search-filter-bar:focus-within,
 .search-filter-bar:hover {
-  border-color: var(--line-bright);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.38), 0 0 24px rgba(99, 102, 241, 0.1);
+  border-color: rgba(30, 64, 175, 0.35) !important;
+  box-shadow: var(--shadow-strong) !important;
 }
 
 .search-input {
-  min-width: 220px;
-  padding: 0 0.5rem;
-}
-
-.search-input .input-group-text {
-  padding-left: 0;
-  color: var(--muted) !important;
-}
-
-.search-input .input-group-text::first-letter {
-  color: var(--indigo-light);
+  flex: 1;
+  min-width: 200px;
 }
 
 .search-input input {
   padding: 0.65rem 0.25rem;
-  color: var(--text) !important;
+  color: var(--text-primary) !important;
+  border: none !important;
+  background: transparent !important;
   box-shadow: none !important;
-  font-size: 0.78rem;
+  font-size: 0.8rem;
+}
+
+.search-input input:focus {
+  outline: none !important;
 }
 
 .search-input input::placeholder {
-  color: #64748b;
+  color: #94a3b8;
 }
 
 .category-chips {
-  justify-content: flex-end;
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
 }
 
 .chip {
-  padding: 0.55rem 0.75rem;
-  color: var(--muted);
-  background: transparent;
-  border: 1px solid var(--line);
-  border-radius: 7px;
-  font-family: var(--mono);
-  font-size: 0.58rem;
+  padding: 0.45rem 0.85rem;
+  color: var(--text-muted);
+  background: var(--color-crisp-white);
+  border: 1px solid var(--color-soft-slate);
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
   font-weight: 600;
-  transition: all 0.25s ease;
+  transition: all 0.2s ease;
 }
 
 .chip:hover,
 .chip.active {
-  color: #fff;
-  background: rgba(99, 102, 241, 0.18);
-  border-color: rgba(129, 140, 248, 0.45);
-  box-shadow: 0 5px 15px rgba(99, 102, 241, 0.12);
+  color: var(--color-royal-blue);
+  background-color: var(--color-royal-blue-glow);
+  border-color: rgba(30, 64, 175, 0.3);
+  box-shadow: 0 2px 8px rgba(30, 64, 175, 0.08);
 }
 
-/* Primary glass panels */
-.job-feed-card,
-.bid-panel {
-  padding: clamp(1.25rem, 2.5vw, 2rem);
+/* ==========================================================================
+   3. JOB REQUISITION FEED CARDS
+   ========================================================================== */
+
+.job-feed-card {
+  padding: 1.5rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.job-feed-card:hover,
-.bid-panel:hover {
-  border-color: var(--line-bright);
-  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.42), 0 0 28px rgba(99, 102, 241, 0.1);
-  transform: translateY(-3px);
+.job-feed-card:hover {
+  border-color: rgba(30, 64, 175, 0.3) !important;
+  box-shadow: var(--shadow-strong) !important;
 }
 
+/* Metadata tag rows */
 .card-topline,
 .trust-indicators,
 .job-heading,
@@ -118,7 +128,7 @@
 
 .trust-indicators {
   flex-wrap: wrap;
-  gap: 0.45rem;
+  gap: 0.4rem;
 }
 
 .trust-tag,
@@ -127,37 +137,37 @@
 .match-label {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  font-family: var(--mono);
-  font-size: 0.58rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  gap: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
 }
 
 .trust-tag {
-  padding: 0.42rem 0.6rem;
-  border: 1px solid;
+  padding: 0.35rem 0.65rem;
   border-radius: 6px;
+  border: 1px solid transparent;
 }
 
 .escrow-tag {
-  color: #6ee7b7;
-  background: rgba(16, 185, 129, 0.08);
-  border-color: rgba(16, 185, 129, 0.25);
+  color: var(--color-forest-emerald);
+  background-color: var(--color-forest-emerald-glow);
+  border-color: rgba(4, 120, 87, 0.15);
 }
 
 .dispute-tag {
-  color: #fda4af;
-  background: rgba(244, 63, 94, 0.08);
-  border-color: rgba(244, 63, 94, 0.25);
+  color: var(--color-crimson-red);
+  background-color: var(--color-crimson-red-glow);
+  border-color: rgba(190, 18, 60, 0.15);
 }
 
 .timestamp,
 .proposal-header time {
-  color: var(--muted);
-  font-family: var(--mono);
-  font-size: 0.6rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
 }
 
 .timestamp i {
@@ -166,183 +176,202 @@
 
 .job-heading {
   align-items: flex-start;
-  margin-top: 1.7rem;
+  margin-top: 1.25rem;
 }
 
 .status-label {
-  color: var(--emerald);
+  color: var(--color-forest-emerald);
 }
 
 .status-label span {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--emerald);
-  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+  background-color: var(--color-forest-emerald);
+  box-shadow: 0 0 0 4px var(--color-forest-emerald-glow);
 }
 
 .job-heading h2 {
-  margin: 0.55rem 0 0;
-  color: #fff;
-  font-size: clamp(1.35rem, 3vw, 1.8rem);
-  line-height: 1.15;
+  margin: 0;
+  color: var(--text-primary) !important;
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  line-height: 1.2;
 }
 
+/* Floating meta action triggers */
 .ghost-icon {
+  display: grid;
+  place-items: center;
   width: 34px;
   height: 34px;
-  flex: 0 0 auto;
-  color: var(--muted);
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--line);
+  flex-shrink: 0;
+  color: var(--text-muted);
+  background-color: var(--color-crisp-white);
+  border: 1px solid var(--color-soft-slate);
   border-radius: 8px;
+  transition: all 0.2s ease;
 }
 
 .ghost-icon:hover {
-  color: #fff;
-  background: rgba(99, 102, 241, 0.12);
-  border-color: var(--line-bright);
+  color: var(--color-royal-blue);
+  background-color: var(--color-royal-blue-glow);
+  border-color: rgba(30, 64, 175, 0.3);
 }
 
 .job-description,
 .panel-copy,
 .proposal-card p {
-  color: var(--muted);
-  font-size: 0.82rem;
-  line-height: 1.7;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
 }
 
 .job-description {
-  max-width: 47rem;
-  margin: 1.15rem 0;
+  max-width: 48rem;
+  margin: 1rem 0;
 }
 
+/* Required skill pills */
 .skill-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.45rem;
-  padding-bottom: 1.4rem;
-  border-bottom: 1px solid var(--line);
+  gap: 0.4rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--color-soft-slate);
 }
 
 .skill-list span {
-  padding: 0.4rem 0.62rem;
-  color: #c7d2fe;
-  background: rgba(99, 102, 241, 0.1);
-  border: 1px solid rgba(129, 140, 248, 0.16);
+  padding: 0.35rem 0.65rem;
+  color: var(--color-royal-blue);
+  background-color: var(--color-royal-blue-glow);
+  border: 1px solid rgba(30, 64, 175, 0.15);
   border-radius: 6px;
-  font-family: var(--mono);
-  font-size: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 500;
 }
 
+/* Card metrics */
 .project-metrics,
 .proposal-metrics {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.8rem;
+  gap: 0.75rem;
+  border-color: var(--color-soft-slate);
 }
 
 .project-metrics {
-  padding: 1.35rem 0;
-  border-bottom: 1px solid var(--line);
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--color-soft-slate);
 }
 
 .project-metrics span,
 .proposal-metrics span,
 .client-profile span {
   display: block;
-  margin-bottom: 0.35rem;
-  color: var(--muted);
-  font-family: var(--mono);
-  font-size: 0.57rem;
+  margin-bottom: 0.25rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
   text-transform: uppercase;
 }
 
 .project-metrics strong,
 .proposal-metrics strong {
-  color: #fff;
-  font-family: var(--mono);
-  font-size: 0.78rem;
-  font-weight: 600;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
 }
 
+/* Metric highlights */
 .project-metrics div:first-child strong,
 .proposal-metrics div:first-child strong {
-  color: #6ee7b7;
+  color: var(--color-forest-emerald) !important;
 }
 
 .client-strip {
-  margin-top: 1.2rem;
-  padding-top: 1.2rem;
-  border-top: 1px solid var(--line);
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-soft-slate);
+  border-color: var(--color-soft-slate);
 }
 
 .client-profile {
-  gap: 0.65rem;
+  gap: 0.5rem;
 }
 
 .client-profile img,
 .proposal-person img {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   object-fit: cover;
-  border: 2px solid rgba(129, 140, 248, 0.35);
+  border: 2px solid rgba(30, 64, 175, 0.15);
   border-radius: 50%;
 }
 
 .client-profile strong {
   display: block;
-  color: var(--text);
-  font-size: 0.74rem;
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  font-weight: 600;
 }
 
 .client-profile strong i {
   margin-left: 0.2rem;
-  color: var(--emerald);
+  color: var(--color-forest-emerald);
 }
 
 .client-rating {
-  color: var(--muted);
-  font-family: var(--mono);
-  font-size: 0.6rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
 }
 
 .client-rating strong {
-  color: #fcd34d;
-  font-size: 0.75rem;
+  color: var(--color-amber-gold);
+  font-size: 0.78rem;
 }
 
 .client-rating i,
 .proposal-person i {
-  color: #fbbf24;
+  color: var(--color-amber-gold);
 }
 
-/* Proposal form */
-.panel-heading {
-  align-items: flex-start;
+/* ==========================================================================
+   4. INTERACTIVE BIDDING PANELS & FORMS
+   ========================================================================== */
+
+.bid-panel {
+  padding: 1.5rem;
+}
+
+.bid-panel:hover {
+  border-color: rgba(30, 64, 175, 0.3) !important;
+  box-shadow: var(--shadow-strong) !important;
 }
 
 .panel-heading h2,
 .section-heading h2 {
   margin: 0;
-  color: #fff;
+  color: var(--text-primary) !important;
   font-size: 1.25rem;
 }
 
 .step-index {
-  color: var(--indigo-light);
-  font-family: var(--mono);
+  color: var(--color-royal-blue);
+  font-family: var(--font-mono);
   font-size: 0.75rem;
   font-weight: 700;
 }
 
 .step-index small {
-  color: var(--muted);
-  font-size: 0.6rem;
+  color: var(--text-muted);
+  font-size: 0.65rem;
 }
 
 .panel-copy {
-  margin: 0.7rem 0 1.4rem;
+  margin: 0.5rem 0 1.25rem;
 }
 
 .form-field {
@@ -351,16 +380,16 @@
 
 .form-field label {
   display: block;
-  margin-bottom: 0.45rem;
-  color: #d7def0;
-  font-size: 0.68rem;
+  margin-bottom: 0.35rem;
+  color: var(--text-primary);
+  font-size: 0.75rem;
   font-weight: 600;
 }
 
 .form-field label small {
-  color: var(--muted);
-  font-family: var(--mono);
-  font-size: 0.58rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
   font-weight: 400;
 }
 
@@ -373,26 +402,27 @@
   position: absolute;
   top: 50%;
   left: 0.85rem;
-  color: var(--muted);
+  color: var(--text-muted);
   transform: translateY(-50%);
 }
 
 .input-prefix {
-  color: var(--emerald);
-  font-family: var(--mono);
+  color: var(--color-forest-emerald);
+  font-family: var(--font-mono);
+  font-weight: 600;
 }
 
 .input-shell input,
 .form-field textarea {
   width: 100%;
-  padding: 0.78rem 0.85rem;
-  color: var(--text);
-  background: rgba(5, 10, 22, 0.58);
-  border: 1px solid var(--line);
+  padding: 0.7rem 0.85rem;
+  color: var(--text-primary);
+  background-color: var(--color-crisp-white);
+  border: 1px solid var(--color-soft-slate);
   border-radius: 8px;
-  outline: 0;
-  font-size: 0.78rem;
-  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  outline: none;
+  font-size: 0.8rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .input-shell input {
@@ -401,27 +431,27 @@
 
 .input-shell input::placeholder,
 .form-field textarea::placeholder {
-  color: #53617a;
+  color: #94a3b8;
 }
 
 .input-shell input:focus,
 .form-field textarea:focus {
-  background: rgba(8, 14, 29, 0.82);
-  border-color: var(--indigo);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.13), 0 8px 20px rgba(0, 0, 0, 0.16);
+  border-color: var(--color-royal-blue);
+  box-shadow: 0 0 0 3px var(--color-royal-blue-glow);
 }
 
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.8rem;
+  gap: 0.75rem;
 }
 
+/* Live escrow fee breakdown panel */
 .fee-preview {
-  margin: 0.25rem 0 1rem;
+  margin: 0.25rem 0 1.25rem;
   padding: 0.85rem;
-  background: linear-gradient(135deg, rgba(5, 10, 22, 0.7), rgba(16, 24, 42, 0.55));
-  border: 1px solid var(--line);
+  background-color: var(--color-warm-alabaster);
+  border: 1px solid var(--color-soft-slate);
   border-radius: 8px;
 }
 
@@ -429,17 +459,17 @@
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  color: var(--muted);
-  font-family: var(--mono);
-  font-size: 0.6rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
 }
 
 .fee-preview div + div {
   margin-top: 0.65rem;
   padding-top: 0.65rem;
-  color: var(--text);
-  border-top: 1px solid var(--line);
-  font-weight: 600;
+  color: var(--text-primary);
+  border-top: 1px solid var(--color-soft-slate);
+  font-weight: 700;
 }
 
 .fee-preview small {
@@ -447,65 +477,74 @@
 }
 
 .fee-preview strong {
-  color: var(--rose);
+  color: var(--color-crimson-red);
   font-weight: 600;
 }
 
 .fee-preview div + div strong {
-  color: var(--emerald);
+  color: var(--color-forest-emerald);
 }
 
+/* Global primary submission buttons */
 .primary-button,
 .award-button {
   width: 100%;
-  padding: 0.78rem 1rem;
-  color: #fff;
-  background: linear-gradient(135deg, var(--indigo), #5558e6);
-  border: 1px solid #818cf8;
+  padding: 0.75rem 1rem;
+  color: #ffffff;
+  background-color: var(--color-royal-blue);
+  border: 1px solid var(--color-royal-blue);
   border-radius: 8px;
-  box-shadow: 0 8px 18px rgba(99, 102, 241, 0.16);
-  font-size: 0.75rem;
-  font-weight: 600;
+  box-shadow: 0 4px 12px var(--color-royal-blue-glow);
+  font-size: 0.78rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
 }
 
 .primary-button i,
 .award-button i {
   float: right;
-  font-size: 1rem;
+  font-size: 0.95rem;
+  margin-top: 0.1rem;
 }
 
 .primary-button:hover,
 .award-button:hover {
-  box-shadow: 0 12px 25px rgba(99, 102, 241, 0.3);
-  filter: brightness(1.08);
+  background-color: #1e3a8a;
+  border-color: #1e3a8a;
+  box-shadow: 0 6px 16px rgba(30, 64, 175, 0.2);
 }
 
-/* Proposal feed */
+/* ==========================================================================
+   5. PROPOSAL LEDGER CARDS & FEED
+   ========================================================================== */
+
 .section-heading {
-  align-items: end;
-  margin-bottom: 1rem;
+  align-items: flex-end;
+  margin-bottom: 1.25rem;
 }
 
 .section-heading h2 span {
-  color: var(--muted);
-  font-family: var(--mono);
-  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
   font-weight: 400;
 }
 
 .sort-control {
-  padding: 0.5rem 0.65rem;
-  color: var(--muted);
+  padding: 0.45rem 0.65rem;
+  color: var(--text-muted);
   background: transparent;
-  border: 1px solid var(--line);
-  border-radius: 7px;
-  font-family: var(--mono);
-  font-size: 0.6rem;
+  border: 1px solid var(--color-soft-slate);
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  transition: all 0.2s ease;
 }
 
 .sort-control:hover {
-  color: #fff;
-  border-color: var(--line-bright);
+  color: var(--color-royal-blue);
+  border-color: rgba(30, 64, 175, 0.3);
+  background-color: var(--color-royal-blue-glow);
 }
 
 .sort-control i {
@@ -513,124 +552,126 @@
 }
 
 .bids-container {
-  display: grid;
-  gap: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
 }
 
 .proposal-card {
-  padding: 1.2rem;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(12px);
+  padding: 1.25rem;
+  background-color: var(--color-crisp-white) !important;
+  border: 1px solid var(--color-soft-slate) !important;
+  border-radius: 12px;
+  box-shadow: var(--shadow-soft) !important;
 }
 
 .proposal-card:hover {
-  border-color: var(--line-bright);
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.42), 0 0 24px rgba(99, 102, 241, 0.1);
-  transform: translateY(-3px);
+  border-color: rgba(30, 64, 175, 0.3) !important;
+  box-shadow: var(--shadow-strong) !important;
 }
 
 .featured-proposal {
-  background: linear-gradient(145deg, rgba(42, 43, 102, 0.65), rgba(19, 27, 46, 0.7));
-  border-color: rgba(129, 140, 248, 0.38);
+  background-color: var(--color-royal-blue-glow) !important;
+  border-color: rgba(30, 64, 175, 0.2) !important;
 }
 
 .proposal-header {
-  margin-bottom: 1rem;
+  margin-bottom: 0.85rem;
 }
 
 .match-label,
 .verified-label {
-  color: #c4b5fd;
+  color: var(--color-royal-blue);
 }
 
 .verified-label {
-  color: #6ee7b7;
+  color: var(--color-forest-emerald);
 }
 
 .proposal-person {
   justify-content: flex-start;
-  gap: 0.7rem;
+  gap: 0.65rem;
 }
 
 .proposal-person img {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
 }
 
 .proposal-person h3 {
-  margin: 0 0 0.2rem;
-  color: #fff;
-  font-size: 0.88rem;
+  margin: 0 0 0.15rem;
+  color: var(--text-primary) !important;
+  font-size: 0.85rem;
   letter-spacing: -0.02em;
 }
 
 .proposal-person span {
-  color: var(--muted);
-  font-size: 0.65rem;
+  color: var(--text-muted);
+  font-size: 0.7rem;
 }
 
 .proposal-person b {
   margin: 0 0.25rem;
-  color: #43516b;
+  color: var(--color-soft-slate);
 }
 
 .proposal-card p {
-  margin: 1rem 0;
-  font-size: 0.75rem;
+  margin: 0.85rem 0;
+  font-size: 0.8rem;
 }
 
 .proposal-metrics {
-  margin-bottom: 1rem;
-  padding: 0.85rem 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  margin-bottom: 0.85rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--color-soft-slate);
+  border-bottom: 1px solid var(--color-soft-slate);
 }
 
 .award-button {
-  padding: 0.62rem 0.8rem;
-  color: var(--indigo-light);
-  background: rgba(99, 102, 241, 0.1);
-  border-color: rgba(129, 140, 248, 0.25);
+  padding: 0.55rem 0.85rem;
+  color: var(--color-royal-blue);
+  background-color: var(--color-royal-blue-glow);
+  border-color: rgba(30, 64, 175, 0.15);
   text-align: left;
 }
 
+/* Inflow animations for newly added dynamic proposals */
 .new-proposal {
-  animation: proposal-in 0.45s ease both;
+  animation: proposal-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @keyframes proposal-in {
   from {
     opacity: 0;
-    transform: translateY(-10px) scale(0.98);
+    transform: translateY(-8px) scale(0.99);
   }
-
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
 }
 
+/* Screen toast alerts */
 .toast-message {
   position: fixed;
   right: 1.5rem;
   bottom: 1.5rem;
-  z-index: 20;
+  z-index: 1000;
   display: flex;
   align-items: center;
-  gap: 0.45rem;
-  padding: 0.85rem 1rem;
-  color: #d1fae5;
-  background: #064e3b;
-  border: 1px solid var(--emerald);
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  color: #065f46;
+  background-color: #ecfdf5;
+  border: 1px solid var(--color-forest-emerald);
   border-radius: 8px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
-  font-size: 0.74rem;
+  box-shadow: var(--shadow-strong);
+  font-size: 0.78rem;
+  font-weight: 500;
   opacity: 0;
   pointer-events: none;
   transform: translateY(1rem);
-  transition: 0.25s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .toast-message.show {
@@ -639,19 +680,18 @@
 }
 
 .toast-message i {
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
-@media (max-width: 1000px) {
-  .marketplace-layout {
-    grid-template-columns: 1fr;
-  }
-}
+/* ==========================================================================
+   6. RESPONSIVE MEDIA HOOKS
+   ========================================================================== */
 
-@media (max-width: 760px) {
+@media (max-width: 768px) {
   .search-filter-bar {
     align-items: stretch;
     flex-direction: column;
+    gap: 0.75rem;
   }
 
   .search-input {
@@ -669,6 +709,7 @@
   .section-heading {
     align-items: flex-start;
     flex-direction: column;
+    gap: 0.5rem;
   }
 
   .timestamp,
@@ -683,11 +724,11 @@
 
   .project-metrics,
   .proposal-metrics {
-    gap: 0.4rem;
+    gap: 0.35rem;
   }
 
   .project-metrics strong,
   .proposal-metrics strong {
-    font-size: 0.68rem;
+    font-size: 0.72rem;
   }
 }
