@@ -1,0 +1,146 @@
+.escrow-container {
+    padding: 24px;
+    color: #ffffff;
+}
+
+.escrow-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 24px;
+}
+
+.escrow-card {
+    background: #171c2e;
+    border: 1px solid #2d354d;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.escrow-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.escrow-amount {
+    font-size: 32px;
+    font-weight: bold;
+    color: #38bdf8;
+    margin: 12px 0;
+}
+
+.escrow-status {
+    display: inline-block;
+    padding: 7px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #374151;
+    color: #ffffff;
+}
+
+.escrow-status.pending {
+    background: #854d0e;
+    color: #fef08a;
+}
+
+.escrow-status.funded {
+    background: #1e40af;
+    color: #bfdbfe;
+}
+
+.escrow-status.in-progress {
+    background: #6b21a8;
+    color: #e9d5ff;
+}
+
+.escrow-status.released {
+    background: #166534;
+    color: #bbf7d0;
+}
+
+.escrow-progress {
+    display: flex;
+    gap: 8px;
+    margin: 28px 0;
+}
+
+.escrow-progress-step {
+    flex: 1;
+    height: 8px;
+    border-radius: 10px;
+    background: #374151;
+    transition: background 0.5s ease;
+}
+
+.escrow-progress-step.active {
+    background: #38bdf8;
+}
+
+.escrow-progress-step.completed {
+    background: #22c55e;
+}
+
+.escrow-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.escrow-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.escrow-btn:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+.escrow-btn:disabled {
+    background: #4b5563;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.escrow-success {
+    animation: escrowSuccess 0.5s ease;
+}
+
+@keyframes escrowSuccess {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 600px) {
+    .escrow-container {
+        padding: 12px;
+    }
+
+    .escrow-card {
+        padding: 16px;
+    }
+
+    .escrow-title {
+        font-size: 23px;
+    }
+
+    .escrow-amount {
+        font-size: 26px;
+    }
+}
