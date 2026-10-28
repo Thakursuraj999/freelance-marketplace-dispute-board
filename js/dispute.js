@@ -1,13 +1,3 @@
-/**
- * ==========================================================================
- * APEXARBITRI DISPUTE TRIBUNAL BOARD MODULE
- * GLA University Mini Project-1
- * 
- * Manages evidentiary hearings, case timelines, arbitrator overrides, and verdicts.
- * Coupled via window CustomEvents: 'disputeInitiated' and 'disputeResolved'.
- * ==========================================================================
- */
-
 const DisputeModule = (() => {
   const STORAGE_KEY = "apex_dispute_cases";
 
